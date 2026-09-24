@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<section class="dashboard-section">
+    <div class="hero">
+        <h1 class="game-title">{{ game_title }}</h1>
+        <p class="subtitle">IoT Target Shooting Game</p>
+        {% if game_started and not game_finished %}
+        <div class="round-progress">
+            <span>Round {{ current_round }} of {{ total_rounds }}</span>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: {{ (current_round / total_rounds) * 100 }}%"></div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    {% if not game_started %}
+    <div class="start-panel card">
+        <h2>Ready to Play?</h2>
+        <p>Start a new game session with {{ total_rounds }} rounds.</p>
+        <form action="{{ url_for('pages.start_game') }}" method="POST">
+            <button type="submit" class="btn btn-primary btn-lg">
+                &#9654; Start Game
+            </button>
+        </form>
+    </div>
+    {% else %}
+    <div class="stats-grid">
+        <div class="stat-card card accent-score">
+            <div class="stat-label">Current Score</div>
+            <div class="stat-value" id="stat-score">{{ current_score }}</div>
+        </div>
+        <div class="stat-card card accent-round">
+            <div class="stat-label">Current Round</div>
+            <div class="stat-value" id="stat-round">{{ current_round }} / {{ total_rounds }}</div>
+        </div>
+        <div class="stat-card card accent-hits">
+            <div class="stat-label">Hits (Last Round)</div>
+            <div class="stat-value" id="stat-hits">{{ hits }}</div>
+        </div>
+        <div class="stat-card card accent-misses">
+            <div class="stat-label">Misses (Last Round)</div>
+            <div class="stat-value" id="stat-misses">{{ misses }}</div>
+        </div>
+        <div class="stat-card card accent-accuracy">
+            <div class="stat-label">Accuracy</div>
+            <div class="stat-value" id="stat-accuracy">{{ accuracy }}%</div>
+        </div>
+        <div class="stat-card card accent-reaction">
+            <div class="stat-label">Reaction Time</div>
+            <div class="stat-value" id="stat-reaction">{{ reaction_time }} ms</div>
+        </div>
+    </div>
+
+    <div class="action-panel">
+        {% if not game_finished %}
+        <button id="mock-round-btn" class="btn btn-secondary">
+            &#127919; Simulate Next Round (Mock)
+        </button>
+        <button id="refresh-btn" class="btn btn-outline">
+            &#8635; Refresh Stats
+        </button>
+        {% endif %}
+
+        {% if game_finished %}
+        <div class="game-done-banner card">
+            <h2>&#127942; Game Complete!</h2>
+            <p>View your detailed performance under Final Results.</p>
+            <a href="{{ url_for('pages.final_results') }}" class="btn btn-primary">View Final Results</a>
+        </div>
+        {% endif %}
+
+        <form action="{{ url_for('pages.reset_game') }}" method="POST" class="reset-form">
+            <button type="submit" class="btn btn-danger">&#128465; Reset Game</button>
+        </form>
+    </div>
+    {% endif %}
+</section>
+{% endblock %}

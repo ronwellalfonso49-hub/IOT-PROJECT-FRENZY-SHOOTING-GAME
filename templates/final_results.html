@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}Final Results{% endblock %}
+
+{% block content %}
+<section class="final-section">
+    <div class="section-header">
+        <h1>Final Results</h1>
+        <p>Overall game performance summary.</p>
+    </div>
+
+    {% if results %}
+    <div class="final-stats">
+        <div class="stat-card card accent-score big">
+            <div class="stat-label">Total Score</div>
+            <div class="stat-value">{{ results.total_score }}</div>
+        </div>
+
+        <div class="summary-grid">
+            <div class="stat-card card accent-hits">
+                <div class="stat-label">Total Hits</div>
+                <div class="stat-value">{{ results.total_hits }}</div>
+            </div>
+            <div class="stat-card card accent-misses">
+                <div class="stat-label">Total Misses</div>
+                <div class="stat-value">{{ results.total_misses }}</div>
+            </div>
+            <div class="stat-card card accent-accuracy">
+                <div class="stat-label">Average Accuracy</div>
+                <div class="stat-value">{{ results.average_accuracy }}%</div>
+            </div>
+            <div class="stat-card card accent-reaction">
+                <div class="stat-label">Avg Reaction Time</div>
+                <div class="stat-value">{{ results.average_reaction_time }} ms</div>
+            </div>
+        </div>
+
+        <div class="ml-placeholders">
+            <div class="card placeholder-card">
+                <h3>&#129302; Performance Level</h3>
+                <p class="placeholder-text">{{ results.performance_level }}</p>
+                <p class="placeholder-note">Will be implemented with the ML module.</p>
+            </div>
+            <div class="card placeholder-card">
+                <h3>&#128161; Intelligent System Remarks</h3>
+                <p class="placeholder-text">{{ results.intelligent_remarks }}</p>
+                <p class="placeholder-note">Will be implemented with the AI remarks module.</p>
+            </div>
+        </div>
+
+        <div class="final-actions">
+            <a href="{{ url_for('pages.round_results') }}" class="btn btn-outline">View Round Table</a>
+            <form action="{{ url_for('pages.reset_game') }}" method="POST" style="display: inline;">
+                <button type="submit" class="btn btn-primary">Play Again</button>
+            </form>
+        </div>
+    </div>
+    {% else %}
+    <div class="empty-state card">
+        <p>&#128202; No final results yet.</p>
+        <p>Complete all rounds to view your final summary.</p>
+        <a href="{{ url_for('pages.dashboard') }}" class="btn btn-primary">Go to Dashboard</a>
+    </div>
+    {% endif %}
+</section>
+{% endblock %}

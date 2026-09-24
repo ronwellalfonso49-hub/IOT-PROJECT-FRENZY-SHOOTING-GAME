@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}Round Results{% endblock %}
+
+{% block content %}
+<section class="results-section">
+    <div class="section-header">
+        <h1>Round Results</h1>
+        <p>Per-round performance breakdown.</p>
+    </div>
+
+    {% if rounds %}
+    <div class="table-wrapper card">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Round</th>
+                    <th>Hits</th>
+                    <th>Misses</th>
+                    <th>Accuracy</th>
+                    <th>Reaction Time</th>
+                    <th>Score</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for r in rounds %}
+                <tr>
+                    <td class="round-num">#{{ r.round_number }}</td>
+                    <td class="val-hits">{{ r.hits }}</td>
+                    <td class="val-misses">{{ r.misses }}</td>
+                    <td class="val-accuracy">{{ r.accuracy }}%</td>
+                    <td class="val-reaction">{{ r.reaction_time }} ms</td>
+                    <td class="val-score">{{ r.score }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="empty-state card">
+        <p>&#128203; No round data yet.</p>
+        <p>Start a game on the Dashboard to begin recording rounds.</p>
+        <a href="{{ url_for('pages.dashboard') }}" class="btn btn-primary">Go to Dashboard</a>
+    </div>
+    {% endif %}
+</section>
+{% endblock %}
